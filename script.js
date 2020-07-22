@@ -1,40 +1,35 @@
+/*
+
+!!!!
+DRAW FONKSİYONUNU NEREYE KOYACAĞINA KARAR VER !!!!!!
+!!!!
+
+*/
+
+
 //function constructor
-function MyArray(n, min, max)
+function MyArray(n, width, height)
 {
 	//canvas
 	this.canvas = document.getElementById("myCanvas");
 
 	this.canvas = document.getElementById("myCanvas");
 
-	this.canvas.width = 500, this.canvas.height = 500;
+	this.canvas.width = width, this.canvas.height = height;
 	this.canvas.style = "border:1px solid black";
 
 	this.ctx = this.canvas.getContext("2d");
 
 	this.array = [];
-	let current = min;
 
-	//this.activeIndex;
+	this.sorted = [];	//color black
+	this.activeIndex = [];
 
-	//counter değişkeni yerine bir array kullanmak daha mantıklı olabilir
-	//çünkü sıralama sağdan veya soldan olabilir
-	//this.sorted = [] ... şeklinde !!!
-	//this.counter = 0;
-
-	this.sorted = [];
-
-	this.minIndex;
-
-	this.FPS = 10;
+	this.FPS = 120;
 
 	for(let i=0; i<n; i++)
 	{
-		//1st method
-		this.array.push(parseFloat((Math.random() * (max - min + 1) + min).toFixed(2)));
-
-		//2nd method
-		//this.array.push(parseFloat(current.toFixed(2)));
-		//current += (max-min) / (n-1);
+		this.array.push(parseFloat((Math.random() * (height*0.7 - height*0.1 + 1) + height*0.1).toFixed(2)));
 	}
 
 	this.shuffle();
@@ -48,19 +43,13 @@ MyArray.prototype.clear = function()
 //adjust this function!!!
 MyArray.prototype.draw = function()
 {
-	console.log(this.array, this.minIndex);
+	//console.log(this.array, this.minIndex);
 	//drawing function
 
 	//clear canvas
 	this.clear();
 
 	var xPos = 0;
-	this.ctx.fillStyle = "black";
-	for(var i=0; i<this.sorted.length; i++)
-	{
-		this.ctx.fillRect(xPos, this.canvas.height, 10, - this.array[i]);
-		xPos += 10;
-	}
 
 
 	for(let i = 0; i<this.array.length; i++)
@@ -68,7 +57,7 @@ MyArray.prototype.draw = function()
 		if(this.sorted.includes(i))
 		{
 			this.ctx.fillStyle = "black";
-		}else if(i == this.minIndex)
+		}else if(this.activeIndex.includes(i))
 		{
 			this.ctx.fillStyle = "green";
 		}else
@@ -140,11 +129,11 @@ MyArray.prototype.selectionSort = async function()
 
 MyArray.prototype.insertionSort = async function()
 {
-	this.counter = [];
+	this.sorted = [];
 	let temp;
 	for(let i=0; i<this.array.length; i++)
 	{
-		let j = this.counter.length;
+		let j = this.sorted.length;
 		temp = i;
 
 		while(j > 0 && this.array[j] < this.array[temp-1])
@@ -155,14 +144,111 @@ MyArray.prototype.insertionSort = async function()
 			temp--;
 		}
 
-		this.counter.push(i);
+		this.sorted.push(i);
+
+		console.log(this)
 
 		await this.delay(1000/this.FPS);
 		this.draw();
-	}	
+	}
+
+	await this.delay(1000/this.FPS);
+	this.draw();
+}
+
+MyArray.prototype.bubbleSort = async function()
+{
+	this.sorted = [];
+	let temp;
+	for(let i=0; i<this.array.length; i++)
+	{
+		for(var j=0; j<this.array.length-i; j++)
+		{
+			if(this.array[j] > this.array[j+1])
+			{
+				this.swap(j, j+1);
+			}
+
+			await this.delay(1000/this.FPS);
+			this.draw();
+
+		}
+		this.sorted.push(j);
+		
+	}
+
+	this.sorted.push(0);
+
+	await this.delay(1000/this.FPS);
+	this.draw();
+}
+
+MyArray.prototype.radixSort = function()
+{
+	let maxNumber = this.max();
+
+	let exp = 1;
+	while(maxNumber > exp)
+	{
+		this.radixHelper(exp);
+		exp *= 10;
+	}
+
+}
+
+MyArray.prototype.radixHelper = function(exp)
+{
+	//123 => 3, 123 => 2, 123 => 1
+	let sorted = [];
+	let count = [];
+
+	//count : [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+	for(let i=0; i<10; i++)
+	{
+		count.push([]);
+	}
+
+	let result;	
+
+	//2D ARRAY
+	let n = this.array.length;
+	for(let i=0; i<n; i++)
+	{
+		result = (Math.floor(this.array[i] / exp))%10;
+		count[result].push(i);
+	}
+
+	for(let i=0; i<10; i++)
+	{
+		for(let j=0; j<count[i].length; j++)
+		{
+			sorted.push(this.array[ count[i][j] ]);
+		}
+	}
+
+	//save the sorted array
+	for(let i=0; i<n; i++)
+	{
+		this.array[i] = sorted[i];
+	}
+
+
 }
 
 
+MyArray.prototype.max = function()
+{
+	let max = this.array[0];
+	for(let i=0; i<this.array.length; i++)
+	{
+		if(this.array[i] > max)
+		{
+			max = this.array[i];
+		}
+	}
+
+	return max;
+}
 
 MyArray.prototype.shuffle = function()
 {
@@ -180,16 +266,33 @@ function main()
 	let height = 500;
 
 	//create array
-	let algorithm = new MyArray(40, height/10, height/2);
+	let algorithm = new MyArray(40, width, height);
 
 	//shuffle the cards
 	algorithm.shuffle();
 
 	//do the selection sort
-	algorithm.selectionSort();
+	//algorithm.selectionSort();
 
 	//do the insertion sort
 	//algorithm.insertionSort();
+
+	//do the bubble sort
+	//algorithm.bubbleSort();
+
+
+	/*
+	MERGE SORT => TRY TO FIX IT
+
+	let sorted = algorithm.mergeSort(algorithm.array);
+
+	algorithm.mergeSort(algorithm.array)
+	.then(sorted => console.log(sorted));
+	*/
+
+	algorithm.radixSort();
+
+	
 
 }
 
