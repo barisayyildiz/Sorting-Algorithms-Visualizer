@@ -25,7 +25,7 @@ function MyArray(n, width, height)
 	this.sorted = [];	//color black
 	this.activeIndex = [];
 
-	this.FPS = 120;
+	this.FPS = 60;
 
 	for(let i=0; i<n; i++)
 	{
@@ -183,20 +183,28 @@ MyArray.prototype.bubbleSort = async function()
 	this.draw();
 }
 
-MyArray.prototype.radixSort = function()
+MyArray.prototype.radixSort = async function()
 {
 	let maxNumber = this.max();
 
 	let exp = 1;
 	while(maxNumber > exp)
 	{
-		this.radixHelper(exp);
+		await this.radixHelper(exp);
 		exp *= 10;
 	}
 
+	for(let i=0; i<this.array.length; i++)
+	{
+		this.sorted.push(i);
+	}
+
+	await this.delay(1000/this.FPS);
+	this.draw();
+
 }
 
-MyArray.prototype.radixHelper = function(exp)
+MyArray.prototype.radixHelper = async function(exp)
 {
 	//123 => 3, 123 => 2, 123 => 1
 	let sorted = [];
@@ -230,7 +238,10 @@ MyArray.prototype.radixHelper = function(exp)
 	for(let i=0; i<n; i++)
 	{
 		this.array[i] = sorted[i];
+		await this.delay(1000/this.FPS);
+		this.draw();
 	}
+
 
 
 }
