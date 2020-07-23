@@ -25,7 +25,7 @@ function MyArray(n, width, height)
 	this.sorted = [];	//color black
 	this.activeIndex = [];
 
-	this.FPS = 120;
+	this.FPS = 240;
 
 	for(let i=0; i<n; i++)
 	{
@@ -286,7 +286,6 @@ MyArray.prototype.cocktailSort = async function()
 				swapped = true;
 			}
 
-			await this.delay(1000/this.FPS);
 			this.draw();
 		}
 
@@ -328,6 +327,96 @@ MyArray.prototype.bogoSort = async function()
 			}
 		}
 	}
+}
+
+MyArray.prototype.gravitySort = async function()
+{
+	let table = [];
+
+	let max = this.max();
+
+	await this.delay(1000);
+	this.draw();
+
+	//create 2d array
+	for(let i=0; i<this.array.length; i++)
+	{
+		table.push([]);
+	}
+
+
+	//fill 2d table
+	var row = 0;
+	var col = 0;
+	for(row = 0; row < this.array.length; row++)
+	{
+
+		for(col = 0; col < this.array[row]; col++)
+		{
+			table[row].push(1);
+		}
+
+		for(;col < max; col++)
+		{
+			table[row].push(0);
+		}
+
+	}
+
+
+	//adjust 2d table
+	for(let col=0; col<max; col++)
+	{
+		//toplam 1 leri hesapla
+		let total = 0;
+		for(let row=0; row<this.array.length; row++)
+		{
+			//console.log(col, row);
+			if(table[row][col] == 1)
+				total++;
+
+		}
+
+		let bottom = this.array.length - 1;
+
+		//yerçekimi... 1 leri indir
+		for(let i=0; i<total; i++)
+		{
+			table[bottom--][col] = 1;
+		}
+
+		for(let i=0; i<=bottom; i++)
+		{
+			table[bottom][col] = 0;
+		}
+	}
+
+	let sortedArray = [];
+
+	for(let i=0; i<table.length; i++)
+	{
+		let counter = 0;
+		for(let j=0; j<max; j++)
+		{
+			if(table[i][j] == 1)
+				counter++;
+			else
+				break;
+		}
+
+		sortedArray.push(counter);
+	}
+
+	for(let i=0; i<this.array.length; i++)
+	{
+		this.array[i] = sortedArray[i];
+	}
+
+	await this.delay(2000);
+	await this.draw();
+
+	console.log(sortedArray);
+
 }
 
 
@@ -376,7 +465,7 @@ function main()
 	let height = 500;
 
 	//create array
-	let algorithm = new MyArray(5, width, height);
+	let algorithm = new MyArray(20, width, height);
 
 	//shuffle the cards
 	algorithm.shuffle();
@@ -391,24 +480,17 @@ function main()
 	//do the bubble sort
 	//algorithm.bubbleSort();
 
-
-	/*
-	MERGE SORT => TRY TO FIX IT
-
-	let sorted = algorithm.mergeSort(algorithm.array);
-
-	algorithm.mergeSort(algorithm.array)
-	.then(sorted => console.log(sorted));
-	*/
-
 	//algorithm.radixSort();
-
 
 	//algorithm.cocktailSort();
 
-	algorithm.bogoSort();
+	//algorithm.bogoSort();
 
+	console.log(algorithm.array);
 
+	//algorithm.array.forEach(element => console.log(Math.floor(element)));
+
+	algorithm.gravitySort();
 	
 
 }
