@@ -77,7 +77,7 @@ MyArray.prototype.swap = function(index1, index2)
 	this.array[index2] = temp;
 }
 
-MyArray.prototype.selectionSort = async function()
+MyArray.prototype.selectionSort = async function()//================DONE
 {
 	//temporary values...
 	let minIndex, temp;
@@ -117,7 +117,7 @@ MyArray.prototype.selectionSort = async function()
 
 }
 
-MyArray.prototype.insertionSort = async function()
+MyArray.prototype.insertionSort = async function()//================DONE
 {
 	this.sorted = [];
 	let temp;
@@ -146,7 +146,7 @@ MyArray.prototype.insertionSort = async function()
 	this.draw();
 }
 
-MyArray.prototype.bubbleSort = async function()
+MyArray.prototype.bubbleSort = async function()//===========DONE
 {
 	this.sorted = [];
 	let temp;
