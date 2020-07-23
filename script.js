@@ -25,7 +25,7 @@ function MyArray(n, width, height)
 	this.sorted = [];	//color black
 	this.activeIndex = [];
 
-	this.FPS = 60;
+	this.FPS = 120;
 
 	for(let i=0; i<n; i++)
 	{
@@ -185,6 +185,7 @@ MyArray.prototype.bubbleSort = async function()
 
 MyArray.prototype.radixSort = async function()
 {
+	this.sorted = [];
 	let maxNumber = this.max();
 
 	let exp = 1;
@@ -242,9 +243,70 @@ MyArray.prototype.radixHelper = async function(exp)
 		this.draw();
 	}
 
+}
 
+MyArray.prototype.cocktailSort = async function()
+{
+	this.sorted = [];
+
+	let swapped = true;
+	let start = 0;
+	let end = this.array.length - 1;
+
+	while(swapped)
+	{
+		swapped = false;
+
+		for(let i=start; i<= end; i++)
+		{
+			if(this.array[i] > this.array[i+1])
+			{
+				this.swap(i, i+1);
+				swapped = true;
+			}
+
+			await this.delay(1000/this.FPS);
+			this.draw();
+		}
+
+		this.sorted.push(end);
+
+		end--;
+
+		if(!swapped)
+			break;
+
+		swapped = false;
+
+		for(let i=end ; i >= start; i--)
+		{
+			if(this.array[i-1] > this.array[i])
+			{
+				this.swap(i-1, i);
+				swapped = true;
+			}
+
+			await this.delay(1000/this.FPS);
+			this.draw();
+		}
+
+		this.sorted.push(start);
+		start++;
+
+
+	}
+
+	//fill this.sorted
+	for(let i=start; i<=end; i++)
+	{
+		this.sorted.push(i);
+	}
+
+	await this.delay(1000/this.FPS);
+	this.draw();
 
 }
+
 
 
 MyArray.prototype.max = function()
@@ -259,6 +321,20 @@ MyArray.prototype.max = function()
 	}
 
 	return max;
+}
+
+MyArray.prototype.min = function()
+{
+	let min = this.array[0];
+	for(let i=0; i<this.array.length; i++)
+	{
+		if(this.array[i] < min)
+		{
+			min = this.array[i];
+		}
+	}
+
+	return min;
 }
 
 MyArray.prototype.shuffle = function()
@@ -282,6 +358,7 @@ function main()
 	//shuffle the cards
 	algorithm.shuffle();
 
+
 	//do the selection sort
 	//algorithm.selectionSort();
 
@@ -301,7 +378,11 @@ function main()
 	.then(sorted => console.log(sorted));
 	*/
 
-	algorithm.radixSort();
+	//algorithm.radixSort();
+
+	console.log(algorithm.array);
+	algorithm.cocktailSort();
+	console.log(algorithm.array);
 
 	
 
