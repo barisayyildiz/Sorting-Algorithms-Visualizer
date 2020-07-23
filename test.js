@@ -488,6 +488,10 @@ class GravitySort extends MyArray
 
 		let max = this.max();
 
+		this.toIntArray();
+
+		console.log(this.array);
+
 		await this.delay(1000);
 		this.draw();
 
@@ -540,7 +544,7 @@ class GravitySort extends MyArray
 
 			for(let i=0; i<=bottom; i++)
 			{
-				table[bottom][col] = 0;
+				table[i][col] = 0;
 			}
 		}
 
@@ -565,11 +569,20 @@ class GravitySort extends MyArray
 			this.array[i] = sortedArray[i];
 		}
 
+		console.log(this.array);
+
 		await this.delay(2000);
 		await this.draw();
 
-		console.log(sortedArray);
 
+	}
+
+	toIntArray()
+	{
+		for(let i=0; i<this.array.length; i++)
+		{
+			this.array[i] = Math.floor(this.array[i]);
+		}
 	}
 
 }
@@ -580,6 +593,6 @@ class GravitySort extends MyArray
 //let sorting = new RadixSort(45, 500, 500);
 //let sorting = new CockTailSort(45, 500, 500);
 //let sorting = new BogoSort(45, 500, 500);
-let sorting = new GravitySort(45, 500, 500);
+let sorting = new GravitySort(20, 500, 500);
 
 console.log(sorting);

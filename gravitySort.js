@@ -65,7 +65,7 @@ function gravitySort(array)
 
 		for(let i=0; i<=bottom; i++)
 		{
-			table[bottom][col] = 0;
+			table[i][col] = 0;
 		}
 	}
 
@@ -91,5 +91,33 @@ function gravitySort(array)
 }
 
 
-let array = [12,3,5,2,41,1];
+let array = [3,7,4,1,2,6,2,6];
 gravitySort(array);
+
+/*
+
+START
+1110000
+1111111
+1111000
+1000000
+1100000
+1111110
+1100000
+1111110
+
+
+END
+1000000
+1100000
+1100000
+1110000
+1111000
+1111110
+1111110
+1111111
+
+1,2,2,3,4,6,6,7
+
+
+*/
