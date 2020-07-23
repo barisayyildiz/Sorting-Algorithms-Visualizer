@@ -307,6 +307,29 @@ MyArray.prototype.cocktailSort = async function()
 
 }
 
+MyArray.prototype.bogoSort = async function()
+{
+	let sorted = false;
+
+	while(!sorted)
+	{
+		sorted = true;
+
+		await this.delay(1000/this.FPS);
+		this.draw();
+
+		for(let i=0; i<this.array.length; i++)
+		{
+			if(this.array[i] > this.array[i+1])
+			{
+				sorted = false;
+				this.shuffle();
+				break;
+			}
+		}
+	}
+}
+
 
 
 MyArray.prototype.max = function()
@@ -353,7 +376,7 @@ function main()
 	let height = 500;
 
 	//create array
-	let algorithm = new MyArray(40, width, height);
+	let algorithm = new MyArray(5, width, height);
 
 	//shuffle the cards
 	algorithm.shuffle();
@@ -380,9 +403,11 @@ function main()
 
 	//algorithm.radixSort();
 
-	console.log(algorithm.array);
-	algorithm.cocktailSort();
-	console.log(algorithm.array);
+
+	//algorithm.cocktailSort();
+
+	algorithm.bogoSort();
+
 
 	
 

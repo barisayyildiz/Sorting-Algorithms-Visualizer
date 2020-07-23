@@ -1,18 +1,14 @@
 function mergeSort(array)
 {
-	//console.log(array.length);
 	if(array.length < 2)
 	{
 		return array;
 	}else
 	{
-		let midPoint = parseInt(array.length / 2);
-		console.log(midPoint);
+		let midPoint = Math.floor(array.length / 2);
 
 		let leftArr = array.slice(0,midPoint);
 		let rightArr = array.slice(midPoint);
-
-		console.log(leftArr, rightArr);
 
 		return merge(mergeSort(leftArr), mergeSort(rightArr));
 	}
@@ -24,9 +20,6 @@ function merge(leftArr, rightArr)
 
 	while(leftArr.length && rightArr.length)
 	{
-		//console.log(leftArr[0]);
-		//leftArr = leftArr.slice(1);
-		console.log(leftArr[0], rightArr[0])
 		if(leftArr[0] <= rightArr[0])
 		{
 			sortedArray.push(leftArr[0]);
@@ -60,3 +53,30 @@ let sorted = mergeSort(array);
 
 
 console.log("sorted : ", sorted);
+
+
+
+
+/*
+
+4-2-5-3-1-8-6
+****
+**
+*****
+***
+*
+********
+******
+
+1-2-3-4-5-6-8
+*
+**
+***
+****
+*****
+******
+********
+---------------
+
+
+*/
