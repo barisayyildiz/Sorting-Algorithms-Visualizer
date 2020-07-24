@@ -10,12 +10,12 @@ class MyArray
 
 		this.ctx = this.canvas.getContext("2d");
 
+		Object.prototype.FPS = 240;
+
 		this.array = [];
 
 		this.sorted = [];	//color : black
 		this.activeIndex = [];
-
-		this.FPS = 240;
 
 		for(let i=0; i<n; i++)
 		{
@@ -145,7 +145,7 @@ class SelectionSort extends MyArray
 					minIndex = j;
 				}
 				//wait for delay function
-				await this.delay(1000/this.FPS);
+				await this.delay(1000/Object.FPS);
 				this.draw();
 
 				this.activeIndex.pop(j);
@@ -158,7 +158,7 @@ class SelectionSort extends MyArray
 			this.swap(i, minIndex);
 		}
 
-		await this.delay(1000/this.FPS);
+		await this.delay(1000/Object.FPS);
 		this.draw();
 
 	}
@@ -441,6 +441,8 @@ class CockTailSort extends MyArray
 	}
 }
 
+
+//DURDURABİLMEK İÇİN BİR MEKANİZMA KOY!!!
 class BogoSort extends MyArray
 {
 	constructor(n, width, height)
@@ -560,24 +562,6 @@ class GravitySort extends MyArray
 
 			temp = this.readTable(table, max);
 
-			/*
-			temp = this.readTable(table, max);
-			this.array = temp;
-
-			for(let i=0; i<this.array.length; i++)
-			{
-				this.array[i] = temp[i];
-			}
-
-			console.log(this.array);
-
-			await this.delay(1000/this.FPS);
-			this.draw();			
-
-			*/
-
-
-			//console.log(table);
 		}
 
 		let sortedArray = [];
@@ -641,101 +625,6 @@ class GravitySort extends MyArray
 
 }
 
-class MergeSort extends MyArray
-{
-	constructor(n, width, height)
-	{
-		super(n, width, height);
-
-		let obj = {
-			array : this.array,
-			startIndex : 0,
-			endIndex : this.array.length,
-			test : 1
-		}
-
-		this.execute(obj);
-	}
-
-	execute(obj)
-	{
-		if(obj.array.length < 2 || (obj.test == 0 && obj.startIndex == 0 && obj.endIndex == this.array.length))
-		{
-			return obj;
-		}else
-		{
-			let midPoint = Math.floor(obj.array.length / 2);
-
-			let leftArr = obj.array.slice(0,midPoint);
-			let rightArr = obj.array.slice(midPoint);
-
-			let leftObj = {
-				array : leftArr,
-				startIndex : obj.startIndex,
-				endIndex : midPoint,
-				test : 0
-			};
-
-			let rigthObj = {
-				array : rightArr,
-				startIndex : midPoint,
-				endIndex : obj.endIndex,
-				test : 0
-			};
-
-			console.log(leftObj.array, rigthObj.array);
-
-
-			this.execute_helper(this.execute(leftObj), this.execute(rigthObj))
-
-		}
-	}
-
-	async execute_helper(leftObj, rigthObj)
-	{
-		let sortedArray = [];
-
-		console.log("+++", leftObj, rigthObj);
-
-		while(leftObj.array.length && rigthObj.array.length)
-		{
-			if(leftObj.array[0] <= rigthObj.array[0])
-			{
-				sortedArray.push(leftObj.array[0]);
-				leftObj.array = leftObj.array.slice(1);
-			}else if(rigthObj.array[0] < leftObj.array[0])
-			{
-				sortedArray.push(rigthObj.array[0]);
-				rigthObj.array = rigthObj.array.slice(1);
-			}
-		}
-
-		while(leftObj.array.length)
-		{
-			sortedArray.push(leftObj.array[0]);
-			leftObj.array = leftObj.array.slice(1);
-		}
-
-		while(rigthObj.array.length)
-		{
-			sortedArray.push(rigthObj.array[0]);
-			rigthObj.array = rigthObj.array.slice(1);
-		}
-
-
-		let counter = 0;
-		for(let i=leftObj.startIndex; i<rigthObj.endIndex; i++)
-		{
-			this.array[i] = sortedArray[counter++];
-		}
-
-		
-		await this.delay(2000);
-		this.draw();
-	}
-
-}
-
 //let sorting = new SelectionSort(50,500,500);
 //let sorting = new InsertionSort(50, 500, 500);
 //let sorting = new BubbleSort(45, 500, 500);
@@ -743,14 +632,64 @@ class MergeSort extends MyArray
 //let sorting = new CockTailSort(45, 500, 500);
 //let sorting = new BogoSort(45, 500, 500);
 //let sorting = new GravitySort(20, 500, 500);
-let sorting = new MergeSort(4, 500, 500);
+
+let sorting;
+
+//Buttons
+let selection = document.getElementById("selection");
+selection.onclick = () => {
+	let sorting = new SelectionSort(50, 600, 300);;
+}
+
+let insertion = document.getElementById("insertion")
+insertion.onclick = () => {
+	let sorting = new InsertionSort(50, 600, 300);
+}
+
+let bubble = document.getElementById("bubble")
+bubble.onclick = () => {
+	let sorting = new BubbleSort(50, 600, 300);
+	console.log("clicked");
+}
+
+let radix = document.getElementById("radix")
+radix.onclick = () => {
+	let sorting = new RadixSort(50, 600, 300);
+	console.log("clicked");
+}
+
+let cocktail = document.getElementById("cocktail")
+cocktail.onclick = () => {
+	let sorting = new CockTailSort(50, 600, 300);
+	console.log("clicked");
+}
+
+let bogo = document.getElementById("bogo")
+bogo.onclick = () => {
+	let sorting = new BogoSort(50, 600, 300);
+	console.log("clicked");
+}
 
 /*
-
-
-7, 8, 3, 5, 12, 1, 6
-
-
-
-
+let gravity = document.getElementById("gravity")
+gravity.onclick = () => {
+	let sorting = new GravitySort(50, 600, 300);
+	console.log("clicked");
+}
 */
+
+let gravity = document.getElementById("gravity");
+gravity.addEventListener("click", () => {
+	new GravitySort(50, 600, 300);
+})
+
+let speedUp = document.getElementById("fast");
+speedUp.onclick = () => {
+	console.log(Object.FPS);
+	Object.FPS /= 2;
+}
+
+
+
+
+//console.log(selection);
