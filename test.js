@@ -503,11 +503,10 @@ class GravitySort extends MyArray
 
 
 		//fill 2d table
-		var row = 0;
 		var col = 0;
-		for(row = 0; row < this.array.length; row++)
+		for(let row = 0; row < this.array.length; row++)
 		{
-
+			let col;
 			for(col = 0; col < this.array[row]; col++)
 			{
 				table[row].push(1);
@@ -520,10 +519,22 @@ class GravitySort extends MyArray
 
 		}
 
+		//this is going the be the array we will draw
+		let temp = [];
+
+		temp = this.readTable(table, max);
 
 		//adjust 2d table
 		for(let col=0; col<max; col++)
 		{
+			for(let i=0; i<this.array.length; i++)
+			{
+				this.array[i] = temp[i];
+			}
+
+			await this.delay(1000/this.FPS);
+			this.draw();
+
 			//toplam 1 leri hesapla
 			let total = 0;
 			for(let row=0; row<this.array.length; row++)
@@ -546,6 +557,27 @@ class GravitySort extends MyArray
 			{
 				table[i][col] = 0;
 			}
+
+			temp = this.readTable(table, max);
+
+			/*
+			temp = this.readTable(table, max);
+			this.array = temp;
+
+			for(let i=0; i<this.array.length; i++)
+			{
+				this.array[i] = temp[i];
+			}
+
+			console.log(this.array);
+
+			await this.delay(1000/this.FPS);
+			this.draw();			
+
+			*/
+
+
+			//console.log(table);
 		}
 
 		let sortedArray = [];
@@ -575,6 +607,28 @@ class GravitySort extends MyArray
 		await this.draw();
 
 
+	}
+
+	readTable(table, max)
+	{
+		let array = [];
+
+		for(let row = 0; row < table.length; row++)
+		{
+			let counter = 0;
+			for(let col = 0; col < max; col++)
+			{
+				if(table[row][col] == 1)
+				{
+					counter++;
+				}
+			}
+
+			array.push(counter);
+		}
+
+
+		return array;
 	}
 
 	toIntArray()
