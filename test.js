@@ -641,12 +641,116 @@ class GravitySort extends MyArray
 
 }
 
+class MergeSort extends MyArray
+{
+	constructor(n, width, height)
+	{
+		super(n, width, height);
+
+		let obj = {
+			array : this.array,
+			startIndex : 0,
+			endIndex : this.array.length,
+			test : 1
+		}
+
+		this.execute(obj);
+	}
+
+	execute(obj)
+	{
+		if(obj.array.length < 2 || (obj.test == 0 && obj.startIndex == 0 && obj.endIndex == this.array.length))
+		{
+			return obj;
+		}else
+		{
+			let midPoint = Math.floor(obj.array.length / 2);
+
+			let leftArr = obj.array.slice(0,midPoint);
+			let rightArr = obj.array.slice(midPoint);
+
+			let leftObj = {
+				array : leftArr,
+				startIndex : obj.startIndex,
+				endIndex : midPoint,
+				test : 0
+			};
+
+			let rigthObj = {
+				array : rightArr,
+				startIndex : midPoint,
+				endIndex : obj.endIndex,
+				test : 0
+			};
+
+			console.log(leftObj.array, rigthObj.array);
+
+
+			this.execute_helper(this.execute(leftObj), this.execute(rigthObj))
+
+		}
+	}
+
+	async execute_helper(leftObj, rigthObj)
+	{
+		let sortedArray = [];
+
+		console.log("+++", leftObj, rigthObj);
+
+		while(leftObj.array.length && rigthObj.array.length)
+		{
+			if(leftObj.array[0] <= rigthObj.array[0])
+			{
+				sortedArray.push(leftObj.array[0]);
+				leftObj.array = leftObj.array.slice(1);
+			}else if(rigthObj.array[0] < leftObj.array[0])
+			{
+				sortedArray.push(rigthObj.array[0]);
+				rigthObj.array = rigthObj.array.slice(1);
+			}
+		}
+
+		while(leftObj.array.length)
+		{
+			sortedArray.push(leftObj.array[0]);
+			leftObj.array = leftObj.array.slice(1);
+		}
+
+		while(rigthObj.array.length)
+		{
+			sortedArray.push(rigthObj.array[0]);
+			rigthObj.array = rigthObj.array.slice(1);
+		}
+
+
+		let counter = 0;
+		for(let i=leftObj.startIndex; i<rigthObj.endIndex; i++)
+		{
+			this.array[i] = sortedArray[counter++];
+		}
+
+		
+		await this.delay(2000);
+		this.draw();
+	}
+
+}
+
 //let sorting = new SelectionSort(50,500,500);
 //let sorting = new InsertionSort(50, 500, 500);
 //let sorting = new BubbleSort(45, 500, 500);
 //let sorting = new RadixSort(45, 500, 500);
 //let sorting = new CockTailSort(45, 500, 500);
 //let sorting = new BogoSort(45, 500, 500);
-let sorting = new GravitySort(20, 500, 500);
+//let sorting = new GravitySort(20, 500, 500);
+let sorting = new MergeSort(4, 500, 500);
 
-console.log(sorting);
+/*
+
+
+7, 8, 3, 5, 12, 1, 6
+
+
+
+
+*/
