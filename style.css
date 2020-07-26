@@ -1,0 +1,16 @@
+#container
+{
+	display: inline-block;
+	margin-left: 50%;
+	transform: translateX(-50%);
+	margin-top: 20px;
+	width: 1000px;
+	height: 500px;
+}
+
+#buttons
+{
+	display: grid;
+	/*grid-auto-flow: column;*/
+	grid-template-columns: auto auto auto auto auto;
+}
