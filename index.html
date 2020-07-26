@@ -4,15 +4,37 @@
 	<title></title>
 
 	<link rel="stylesheet" type="text/css" href="style.css">
-	<!--<script type="text/javascript" src="p5.js"></script>-->
-	<script type="text/javascript" src="myArray.js"></script>
+	<script type="text/javascript" src="mainclass.js"></script>
+	<script type="text/javascript" src="algorithms.js"></script>
+
 </head>
 <body>
 
-	<canvas id="myCanvas"></canvas>
+	<div id="container">
+
+		<canvas id="myCanvas" style="width: 100%; height: 95%"></canvas>
+
+		<br>
+
+		<div id="buttons">
+			<button id="selection" class="sorting">Selection Sort</button>
+			<button id="insertion" class="sorting">Insertion Sort</button>
+			<button id="bubble" class="sorting">Bubble Sort</button>
+			<button id="radix" class="sorting">Radix Sort</button>
+			<button id="cocktail" class="sorting">Cocktail Sort</button>
+			<button id="bogo" class="sorting">Bogo Sort</button>
+			<button id="gravity" class="sorting">Gravity Sort</button>
+			<button id="faster" class="utility">Faster</button>
+			<button id="slower" class="utility">Slower</button>
+			<button id="terminator" class="utility">Terminate</button>
+		</div>
+		
 
 
-	<script type="text/javascript" src="deneme.js"></script>
+	</div>
+
+
+	<script type="text/javascript" src="script.js"></script>
 
 </body>
 </html>

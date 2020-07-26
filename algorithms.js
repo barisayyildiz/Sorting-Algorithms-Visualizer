@@ -1,134 +1,3 @@
-class MyArray
-{
-	constructor(n, width, height, dx)
-	{
-		//initilize canvas
-		this.canvas = document.getElementById("myCanvas");
-
-		this.canvas.width = width, this.canvas.height = height;
-		//this.canvas.style = "border:1px solid black";
-
-		this.dx = dx;
-
-		this.ctx = this.canvas.getContext("2d");
-
-		//termination
-		this.terminate = false;
-
-		this.array = [];
-
-		this.sorted = [];	//color : black
-		this.activeIndex = [];
-
-		for(let i=0; i<n; i++)
-		{
-			this.array.push(parseFloat((Math.random() * (height*0.7 - height*0.1 + 1) + height*0.1).toFixed(2)));
-		}
-
-		this.fastButton = document.getElementById("faster");
-		console.log(this.fastButton);
-		this.fastButton.addEventListener("click", () => {
-			console.log("clicked");
-			this.FPS *= 1.5;
-			console.log(this.FPS);
-		});
-
-		this.slowButton = document.getElementById("slower");
-		this.slowButton.addEventListener("click", () => {
-			//console.log("qweqwdas");
-			this.FPS /= 1.5;
-
-		})
-
-
-		this.shuffle();
-	}
-
-	shuffle()
-	{
-		//https://stackoverflow.com/questions/6274339/how-can-i-shuffle-an-array
-		for(let i=this.array.length-1; i>0; i--)
-		{
-			const j = Math.floor(Math.random() * (i+1));
-			this.swap(i, j);
-		}
-	}
-
-	swap(index1, index2)
-	{
-		let temp = this.array[index1];
-		this.array[index1] = this.array[index2];
-		this.array[index2] = temp;
-	}
-
-	clear()
-	{
-		this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-	}
-
-	draw()
-	{
-		this.clear();
-
-		var xPos = 0;
-
-
-		for(let i = 0; i<this.array.length; i++)
-		{
-			if(this.sorted.includes(i))
-			{
-				this.ctx.fillStyle = "black";
-			}else if(this.activeIndex.includes(i))
-			{
-				this.ctx.fillStyle = "green";
-			}else
-			{
-				this.ctx.fillStyle = "blue";
-			}
-
-			this.ctx.fillRect(xPos, this.canvas.height, this.dx, - this.array[i]);
-			xPos += this.dx;
-		}
-	}
-
-	delay(time)
-	{
-		return new Promise((resolve, reject) => {
-			setTimeout(resolve, time);
-		})
-	}
-
-	max()
-	{
-		let max = this.array[0];
-		for(let i=0; i<this.array.length; i++)
-		{
-			if(this.array[i] > max)
-			{
-				max = this.array[i];
-			}
-		}
-
-		return max;
-	}
-
-	min()
-	{
-
-		let min = this.array[0];
-		for(let i=0; i<this.array.length; i++)
-		{
-			if(this.array[i] < min)
-			{
-				min = this.array[i];
-			}
-		}
-
-		return min;
-	}
-
-}
-
 class SelectionSort extends MyArray
 {
 	constructor(n, width, height, dx)
@@ -162,7 +31,6 @@ class SelectionSort extends MyArray
 			}
 
 			minIndex = i;
-			this.minIndex = i;
 
 			for(let j=i; j<this.array.length; j++)
 			{
@@ -170,7 +38,6 @@ class SelectionSort extends MyArray
 				//this.activeIndex = j;
 				if(this.array[minIndex] > this.array[j])
 				{
-					this.minIndex = j;
 					minIndex = j;
 				}
 
@@ -183,7 +50,6 @@ class SelectionSort extends MyArray
 			}
 
 			this.sorted.push(i);
-			//console.log("counter : ", this.counter);
 
 			this.swap(i, minIndex);
 		}
@@ -213,6 +79,13 @@ class InsertionSort extends MyArray
 		var i=1;
 		for(; i<this.array.length; i++)
 		{
+			if(this.terminate == true)
+			{
+				this.clear();
+				return;
+			}
+
+
 			let j=i-1;
 			let temp = i;
 			let flag = 1;
@@ -378,7 +251,6 @@ class RadixSort extends MyArray
 		let sorted = [];
 		let count = [];
 
-		//count : [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 		for(let i=0; i<10; i++)
 		{
 			count.push([]);
@@ -430,6 +302,8 @@ class CockTailSort extends MyArray
 	constructor(n, width, height, dx)
 	{
 		super(n, width, height, dx);
+
+		this.FPS = 120;
 		this.execute();
 	}
 
@@ -464,6 +338,8 @@ class CockTailSort extends MyArray
 					swapped = true;
 					this.activeIndex.push(i+1);
 				}
+
+				console.log(this.FPS);
 
 				await this.delay(1000/this.FPS);
 				this.draw();
@@ -518,7 +394,6 @@ class CockTailSort extends MyArray
 }
 
 
-//DURDURABİLMEK İÇİN BİR MEKANİZMA KOY!!!
 class BogoSort extends MyArray
 {
 	constructor(n, width, height, dx)
@@ -543,6 +418,8 @@ class BogoSort extends MyArray
 
 			await this.delay(1000/this.FPS);
 			this.draw();
+
+			console.log(this.FPS);
 
 			for(let i=0; i<this.array.length; i++)
 			{
@@ -705,89 +582,3 @@ class GravitySort extends MyArray
 	}
 
 }
-
-//let sorting = new SelectionSort(50,500,500);
-//let sorting = new InsertionSort(50, 500, 500);
-//let sorting = new BubbleSort(45, 500, 500);
-//let sorting = new RadixSort(45, 500, 500);
-//let sorting = new CockTailSort(45, 500, 500);
-//let sorting = new BogoSort(45, 500, 500);
-//let sorting = new GravitySort(20, 500, 500);
-
-let sorting;
-
-let width = 1000;
-let height = 475;
-let dx = 13;
-let n = width/dx;
-
-
-//Buttons
-let selection = document.getElementById("selection");
-selection.onclick = () => {
-	sorting = new SelectionSort(n, width, height, dx);
-}
-
-let insertion = document.getElementById("insertion")
-insertion.onclick = () => {
-	sorting = new InsertionSort(n, width, height, dx);
-}
-
-let bubble = document.getElementById("bubble")
-bubble.onclick = () => {
-	sorting = new BubbleSort(n, width, height, dx);
-	console.log("clicked");
-}
-
-let radix = document.getElementById("radix")
-radix.onclick = () => {
-	sorting = new RadixSort(n, width, height, dx);
-	console.log("clicked");
-}
-
-let cocktail = document.getElementById("cocktail")
-cocktail.onclick = () => {
-	sorting = new CockTailSort(n, width, height, dx);
-	console.log("clicked");
-}
-
-let bogo = document.getElementById("bogo")
-bogo.onclick = () => {
-	sorting = new BogoSort(n, width, height, dx);
-	console.log("clicked");
-}
-
-/*
-let gravity = document.getElementById("gravity")
-gravity.onclick = () => {
-	let sorting = new GravitySort(n, width, height, dx);
-	console.log("clicked");
-}
-*/
-
-let gravity = document.getElementById("gravity");
-gravity.addEventListener("click", () => {
-	sorting = new GravitySort(n, width, height, dx);
-})
-
-let terminator = document.getElementById("terminator")
-terminator.addEventListener("click", () => {
-	if(sorting !== undefined)
-	{
-		sorting.terminate = true;
-	}
-	//console.log(sorting.terminate);
-})
-
-
-/*
-let speedUp = document.getElementById("fast");
-speedUp.onclick = () => {
-	console.log(Object.FPS);
-	Object.FPS /= 2;
-}*/
-
-
-
-
-//console.log(selection);
