@@ -201,7 +201,7 @@ class InsertionSort extends MyArray
 	constructor(n, width, height)
 	{
 		super(n, width, height, dx);
-		this.FPS = 200;
+		this.FPS = 2;
 		this.execute();
 
 	}
@@ -211,12 +211,14 @@ class InsertionSort extends MyArray
 		this.sorted = [];
 		this.activeIndex = [];
 
+
 		if(this.terminate == true)
 			return;
 
 		let temp;
 		for(let i=0; i<this.array.length; i++)
 		{
+
 			if(this.terminate == true)
 			{
 				this.clear();
@@ -226,11 +228,16 @@ class InsertionSort extends MyArray
 			let j = this.sorted.length;
 			temp = i;
 
-			//this.activeIndex.push(i);
+			this.activeIndex.push(i);
+
+			await this.delay(1000/this.FPS);
+			this.draw();
+
+			this.activeIndex = [];
 
 			while(j > 0 && this.array[j] < this.array[temp-1])
 			{
-				//this.activeIndex.push(j);
+				this.activeIndex.push(j-1);
 				//this.activeIndex.push(temp);
 
 				this.minIndex = j;
@@ -245,6 +252,7 @@ class InsertionSort extends MyArray
 				temp--;
 			}
 
+
 			this.sorted.push(i);
 
 			this.activeIndex = [];
@@ -254,7 +262,7 @@ class InsertionSort extends MyArray
 		this.draw();
 
 	}
-	
+
 	draw()
 	{
 		this.clear();
