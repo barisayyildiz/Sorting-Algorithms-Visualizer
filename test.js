@@ -6,13 +6,11 @@ class MyArray
 		this.canvas = document.getElementById("myCanvas");
 
 		this.canvas.width = width, this.canvas.height = height;
-		this.canvas.style = "border:1px solid black";
+		//this.canvas.style = "border:1px solid black";
 
 		this.dx = dx;
 
 		this.ctx = this.canvas.getContext("2d");
-
-		Object.prototype.FPS = 240;
 
 		//termination
 		this.terminate = false;
@@ -201,7 +199,7 @@ class InsertionSort extends MyArray
 	constructor(n, width, height)
 	{
 		super(n, width, height, dx);
-		this.FPS = 2;
+		this.FPS = 120;
 		this.execute();
 
 	}
@@ -212,54 +210,40 @@ class InsertionSort extends MyArray
 		this.activeIndex = [];
 
 
-		if(this.terminate == true)
-			return;
-
-		let temp;
-		for(let i=0; i<this.array.length; i++)
+		var i=1;
+		for(; i<this.array.length; i++)
 		{
+			let j=i-1;
+			let temp = i;
+			let flag = 1;
 
-			if(this.terminate == true)
+			for(let x=0; x<=i; x++)
+					this.sorted.push(x);
+
+
+			while(j >= 0 && this.array[i] < this.array[j])
 			{
-				this.clear();
-				return;
-			}
-
-			let j = this.sorted.length;
-			temp = i;
-
-			this.activeIndex.push(i);
-
-			await this.delay(1000/this.FPS);
-			this.draw();
-
-			this.activeIndex = [];
-
-			while(j > 0 && this.array[j] < this.array[temp-1])
-			{
-				this.activeIndex.push(j-1);
-				//this.activeIndex.push(temp);
-
-				this.minIndex = j;
-				this.swap(temp-1, j);
+				this.swap(i,j);
+				this.activeIndex.push(j);
 
 				await this.delay(1000/this.FPS);
 				this.draw();
 
 				this.activeIndex = [];
 
+				i--;
 				j--;
-				temp--;
+
+				flag = 0;
 			}
 
+			i = temp;
 
-			this.sorted.push(i);
+			await this.delay(1000/this.FPS);
+			this.draw();
 
-			this.activeIndex = [];
 		}
 
-		await this.delay(1000/this.FPS);
-		this.draw();
 
 	}
 
@@ -734,7 +718,7 @@ let sorting;
 
 let width = 1000;
 let height = 475;
-let dx = 20;
+let dx = 13;
 let n = width/dx;
 
 
