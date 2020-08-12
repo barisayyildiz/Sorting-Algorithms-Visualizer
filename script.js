@@ -4,7 +4,7 @@ let sorting;
 let width = 1000;
 
 let height = 380;
-let dx = 10;
+let dx = 20;
 let n = width/dx;
 
 
