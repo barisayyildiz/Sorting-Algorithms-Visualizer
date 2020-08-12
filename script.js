@@ -1,7 +1,7 @@
 let sorting;
 
 //This should have the size of #container width for the maximum resolution
-let width = 1000;
+let width = 1500;
 
 let height = 380;
 let dx = 20;

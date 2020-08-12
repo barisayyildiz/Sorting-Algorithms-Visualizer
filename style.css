@@ -1,10 +1,7 @@
 #container
 {
-	display: inline-block;
-	margin-left: 50%;
-	transform: translateX(-50%);
-	margin-top: 70px;
-	width: 1000px;
+	margin : 70px auto;
+	width: 1500px;
 	height: 400px;
 }
 
