@@ -4,11 +4,11 @@
 
 I visualized these sorting algorithms with only using HTML,CSS and JavaScript:
 
-*Selection Sort
-*Insertion Sort
-*Bubble Sort
-*Radix Sort
-*Cocktail Sort
-*Gravity Sort
+..*Selection Sort
+..*Insertion Sort
+..*Bubble Sort
+..*Radix Sort
+..*Cocktail Sort
+..*Gravity Sort
 
 It was really challenging due to the asynchronous nature of JavaScript
